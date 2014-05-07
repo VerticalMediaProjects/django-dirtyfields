@@ -49,6 +49,17 @@ class DirtyFieldsMixin(object):
         return tuple(k for k, v in self._original_state.iteritems() if v != new_state[k])
 
     @property
+    def dirty_fields_detailed(self):
+        """
+        Returns a list of keys that have changed
+        """
+        if self._deferred:
+            raise TypeError('Cant be used with deferred objects')
+        new_state = self._as_dict()
+        return ", ".join(u'%s (%s -> %s)' % (k, self._original_state[k], new_state[k])
+                         for k, v in self._original_state.iteritems() if v != new_state[k])
+
+    @property
     def is_dirty(self):
         if self._state.adding:
             return True
