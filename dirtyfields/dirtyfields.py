@@ -120,9 +120,11 @@ class DirtyFieldsMixin(object):
 
 # Django 1.5 added support for updating only specified fields, this fails in
 # older versions.
-if VERSION >= (1, 5):
-    def save(self, *args, **kwargs):
-        if not self._state.adding:
-            kwargs['update_fields'] = self.dirty_fields
-        return super(DirtyFieldsMixin, self).save(*args, **kwargs)
-    DirtyFieldsMixin.save = save
+# TODO: this breaks the object cloning, when setting pk=None
+
+# if VERSION >= (1, 5):
+#     def save(self, *args, **kwargs):
+#         if not self._state.adding:
+#             kwargs['update_fields'] = self.dirty_fields
+#         return super(DirtyFieldsMixin, self).save(*args, **kwargs)
+#     DirtyFieldsMixin.save = save
